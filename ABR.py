@@ -1,68 +1,59 @@
-class Nodo:
-    """
-    Classe Nodo per la creazione di un albero binario di ricerca.
-    """
-
-    def __init__(self, valore):
-        """
-        Inizializzazione dell'oggetto Nodo.
-        """
-        self.valore = valore
-        self.sx = None
-        self.dx = None
-        self.rank = 1
+class Node:
+    def __init__(self, v):
+        self.val = v
+        self.left = None
+        self.right = None
+        self.parent = None
 
 
-class Albero:
-    """
-    Classe Albero per la creazione di un albero binario di ricerca.
-    """
-
+class BinarySearchTree:
     def __init__(self):
-        """
-        Inizializzazione dell'oggetto Albero.
-        """
-        self.radice = None
+        self.root = None
+        self.cnt = 0
+        self.target = None # Usato in ricerca
 
-    def inserisci(self, valore):
-        """
-        Inserisce un nodo nell'albero.
-        """
-        self.radice = self._inserisci(self.radice, valore)
-
-    def _inserisci(self, nodo, valore):
-        """
-        Funzione privata per l'inserimento di un nodo nell'albero.
-        """
-        if nodo is None:
-            return Nodo(valore)
-        elif valore < nodo.valore:
-            nodo.sx = self._inserisci(nodo.sx, valore)
+    def insert(self, val):
+        z = Node(val)
+        y = None
+        x = self.root
+        while x is not None:
+            y = x
+            if z.val < x.val:
+                x = x.left
+            else:
+                x = x.right
+        z.parent = y
+        if y is None:
+            self.root = z
+        elif z.val < y.val:
+            y.left = z
         else:
-            nodo.dx = self._inserisci(nodo.dx, valore)
+            y.right = z
 
-        nodo.rank = 1 + (nodo.sx.rank if nodo.sx else 0) + (nodo.dx.rank if nodo.dx else 0)
-        return nodo
+    def print_tree(self):
+        self.print_tree_rec(self.root)
 
-    def statistica_ordine(self, k):
-        """
-        Restituisce il k-esimo elemento dell'albero.
-        """
-        if k < 1 or k > self.radice.rank:
+    def print_tree_rec(self, node):
+        if node is not None:
+            self.print_tree_rec(node.left)
+            print(node.val)
+            self.print_tree_rec(node.right)
+
+    def get_kesimo(self, node, k):
+        self.cnt = k
+        self.target = None
+        self.get_kesimo_it(node)
+        if self.target is None:
             return None
-        return self._statistica_ordine(self.radice, k)
+        return self.target.val
 
-    def _statistica_ordine(self, nodo, k):
-        """
-        Funzione privata per il calcolo della statistica d'ordine.
-        """
-        if nodo.sx:
-            r = nodo.sx.rank
-        else:
-            r = 0
-        if k == r + 1:
-            return nodo.valore
-        elif k <= r:
-            return self._statistica_ordine(nodo.sx, k)
-        else:
-            return self._statistica_ordine(nodo.dx, k - r - 1)
+    def get_kesimo_it(self, node):
+        if node is not None:
+            self.get_kesimo_it(node.left)
+            self.cnt = self.cnt - 1
+            if self.cnt == 0:
+                self.target = node
+                return
+            self.get_kesimo_it(node.right)
+
+

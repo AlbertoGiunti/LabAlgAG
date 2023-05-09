@@ -31,12 +31,6 @@ class OrderedLinkedList:
 
     def order_statistic(self, k):
         curr_node = self.head
-        i = 1
-        while curr_node is not None and i < k:
+        for i in range(k):
             curr_node = curr_node.next
-            i += 1
-
-        if curr_node is not None:
-            return curr_node.value
-        else:
-            return None
+        return curr_node.value
