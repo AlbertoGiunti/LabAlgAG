@@ -10,7 +10,7 @@ from ARN import RedBlackTree
 # Definiamo una funzione che ci permette di eseguire i test della lista ordinata
 def oll_tests(n, rep):
     oll = OrderedLinkedList()
-    A = list(n)
+    A = list(range(n))
     # test inserimento e ricerca k-esima statistica d'ordine
     # eti = elapsed time insert
     eti = 0
@@ -33,7 +33,7 @@ def oll_tests(n, rep):
 # Definiamo una funzione che ci permette di eseguire i test dell'albero binario di ricerca
 def bst_tests(n, rep):
     bst = BinarySearchTree()
-    A = list(n)
+    A = list(range(n))
     # test inserimento e ricerca k-esima statistica d'ordine
     # eti = elapsed time insert
     eti = 0
@@ -45,7 +45,8 @@ def bst_tests(n, rep):
         e = timeit.timeit(stmt=lambda: [bst.insert(A[i]) for i in A], number=1)
         eti = eti + e
         k = random.randint(1, n)
-        os = timeit.timeit(stmt=lambda: bst.get_kesimo(bst.root(), k), number=1)
+        # Misura del tempo di ricerca della k-esima statistica d'ordine
+        os = timeit.timeit(stmt=lambda: bst.get_kesimo(bst.root, k), number=1)
         etos = etos + os
     # Calcolo dei tempi medi di inserimento e ricerca della k-esima statistica d'ordine
     tmi = eti / rep
@@ -54,9 +55,9 @@ def bst_tests(n, rep):
 
 
 # Definiamo una funzione che ci permette di eseguire i test dell'albero rosso nero
-def brt_tests(n, rep):
+def rbt_tests(n, rep):
     rbt = RedBlackTree()
-    A = list(n)
+    A = list(range(n))
     # test inserimento e ricerca k-esima statistica d'ordine
     # eti = elapsed time insert
     eti = 0
@@ -68,7 +69,7 @@ def brt_tests(n, rep):
         e = timeit.timeit(stmt=lambda: [rbt.insert(A[i]) for i in A], number=1)
         eti = eti + e
         k = random.randint(1, n)
-        os = timeit.timeit(stmt=lambda: rbt.os_select(rbt.root(), k), number=1)
+        os = timeit.timeit(stmt=lambda: rbt.os_select(rbt.root, k), number=1)
         etos = etos + os
     # Calcolo dei tempi medi di inserimento e ricerca della k-esima statistica d'ordine
     tmi = eti / rep
@@ -77,15 +78,37 @@ def brt_tests(n, rep):
 
 
 # Definiamo una lista di numeri di test
-n_values = [10, 100, 500, 1000, 3000]
+n_values = list(range(1, 30))
+rep = 15
 
-# Eseguiamo i test per ogni valore di n
-oll_results = []
-bst_results = []
-rbt_results = []
+# Liste dei risultati dei tempi di inserimento
+oll_ins_results = []
+bst_ins_results = []
+rbt_ins_results = []
+
+# Liste dei risultati dei tempi di ricerca di una k-esima statistica d'ordine casuale
+oll_os_results = []
+bst_os_results = []
+rbt_os_results = []
+
 for n in n_values:
-    oll_results.append(oll_run_tests(n))
-    bst_results.append(bst_run_tests(n))
-    rbt_results.append(rbt_run_tests(n))
+    oll_tins, oll_tos = oll_tests(n, rep)
+    oll_ins_results.append(oll_tins)
+    oll_os_results.append(oll_tos)
+    print(oll_ins_results)
+    print(oll_os_results)
+    bst_tins, bst_tos = bst_tests(n, rep)
+    bst_ins_results.append(bst_tins)
+    bst_os_results.append(bst_tos)
+    print(bst_ins_results)
+    print(bst_os_results)
+    rbt_tins, rbt_tos = rbt_tests(n, rep)
+    rbt_ins_results.append(rbt_tins)
+    rbt_os_results.append(rbt_tos)
+    print(rbt_ins_results)
+    print(rbt_os_results)
+
+# Stampa i risultati trovati
+print("Risultati test inserimento lista ordinata:")
 
 # Rappresentiamo i risultati graficamente

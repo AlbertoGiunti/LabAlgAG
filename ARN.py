@@ -20,20 +20,20 @@ class RedBlackTree:
         self.root = nil
         self.nil = nil
 
-    def os_select(self, x, i):
+    def os_select(self, x, k):
         """
         Select the i-th order statistic in the tree.
         :param x: node to start the search from
-        :param i: the i-th order statistic to select
-        :return: the node containing the i-th order statistic, or None if not found
+        :param k: the k-th order statistic to select
+        :return: the node containing the k-th order statistic, or None if not found
         """
         r = x.left.size + 1
-        if i == r:
-            return x
-        elif i < r:
-            return self.os_select(x.left, i)
+        if k == r:
+            return x.val
+        elif k < r:
+            return self.os_select(x.left, k)
         else:
-            return self.os_select(x.right, i - r)
+            return self.os_select(x.right, k - r)
 
     def insert(self, val):
         """
@@ -45,8 +45,10 @@ class RedBlackTree:
         while x != self.nil:
             y = x
             if z.val < x.val:
+                x.size += 1
                 x = x.left
             else:
+                x.size += 1
                 x = x.right
         z.parent = y
         if y == self.nil:
@@ -140,3 +142,14 @@ class RedBlackTree:
 
     def root(self):
         return self.root
+
+    # Funzione che stampa l'albero in ordine di grandezza
+    def print_tree(self):
+        self.print_tree_rec(self.root)
+
+    def print_tree_rec(self, x):
+        if x != self.nil:
+            self.print_tree_rec(x.left)
+            # stampa tutte le informazioni relative a un nodo
+            print("val: " + str(x.val) + " size: " + str(x.size) + " color: " + str(x.color)+ " parent: " + str(x.parent.val) + " left: " + str(x.left.val) + " right: " + str(x.right.val))
+            self.print_tree_rec(x.right)
