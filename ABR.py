@@ -10,7 +10,7 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
         self.cnt = 0
-        self.target = None # Usato in ricerca
+        self.target = None  # Usato in ricerca
 
     def insert(self, val):
         z = Node(val)
@@ -56,4 +56,5 @@ class BinarySearchTree:
                 return
             self.get_kesimo_it(node.right)
 
-
+    def root(self):
+        return self.root
