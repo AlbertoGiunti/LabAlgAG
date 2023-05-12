@@ -81,7 +81,7 @@ def rbt_tests(n, rep):
 
 
 # Definiamo una lista di numeri di test
-n_values = list(range(50, 1000, 50))
+n_values = list(range(50, 2000, 50))
 rep = 15
 
 # Liste dei risultati dei tempi di inserimento
@@ -118,3 +118,72 @@ print("ARN inserimento: "+str(rbt_ins_results))
 print("ARN order-statistic: "+str(rbt_os_results))
 
 # Rappresentiamo i risultati graficamente
+
+# Grafico funzione di inserimento ordered linked list
+plt.plot(assex, oll_ins_results, label="Tempo di inserimento Ordered Linked List")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di inserimento")
+plt.title("Tempo di inserimento Ordered Linked List")
+plt.legend()
+plt.show()
+
+# Grafico funzione di inserimento binary search tree
+plt.plot(assex, bst_ins_results, label="Tempo di inserimento Binary Search Tree")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di inserimento")
+plt.title("Tempo di inserimento Binary Search Tree")
+plt.legend()
+plt.show()
+
+# Grafico funzione di inserimento red black tree
+plt.plot(assex, rbt_ins_results, label="Tempo di inserimento Red Black Tree")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di inserimento")
+plt.title("Tempo di inserimento Red Black Tree")
+plt.legend()
+plt.show()
+
+# Grafico funzione di ricerca ordered linked list
+plt.plot(assex, oll_os_results, label="Tempo di ricerca Ordered Linked List")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di ricerca")
+plt.title("Tempo di ricerca Ordered Linked List")
+plt.legend()
+plt.show()
+
+# Grafico funzione di ricerca binary search tree
+plt.plot(assex, bst_os_results, label="Tempo di ricerca Binary Search Tree")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di ricerca")
+plt.title("Tempo di ricerca Binary Search Tree")
+plt.legend()
+plt.show()
+
+# Grafico funzione di ricerca red black tree
+plt.plot(assex, rbt_os_results, label="Tempo di ricerca Red Black Tree")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di ricerca")
+plt.title("Tempo di ricerca Red Black Tree")
+plt.legend()
+plt.show()
+
+# Confronto delle funzioni di inserimento
+plt.plot(assex, oll_ins_results, label="Tempo di inserimento Ordered Linked List")
+plt.plot(assex, bst_ins_results, label="Tempo di inserimento Binary Search Tree")
+plt.plot(assex, rbt_ins_results, label="Tempo di inserimento Red Black Tree")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di inserimento")
+plt.title("Confronto tra i tempi di inserimento")
+plt.legend()
+plt.show()
+
+
+# Confronto delle funzioni di ricerca
+plt.plot(assex, oll_os_results, label="Tempo di ricerca Ordered Linked List")
+plt.plot(assex, bst_os_results, label="Tempo di ricerca Binary Search Tree")
+plt.plot(assex, rbt_os_results, label="Tempo di ricerca Red Black Tree")
+plt.xlabel("Numero di elementi")
+plt.ylabel("Tempo di ricerca")
+plt.title("Confronto tra i tempi di ricerca")
+plt.legend()
+plt.show()
