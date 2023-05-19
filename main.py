@@ -1,14 +1,14 @@
 import timeit
 import random
 import matplotlib.pyplot as plt
-from tabulate import tabulate
+import pandas as pd
 
 from ordered_linked_list import OrderedLinkedList
 from binary_search_tree import BinarySearchTree
 from red_black_tree import RedBlackTree
 
-n = 300
-step = 100
+n = 1001
+step = 25
 test_per_iteration = 10
 
 # Creo un metodo per creare array di numeri casuali
@@ -59,6 +59,7 @@ def measure_rank_test(rank_function, ric):
 
 # Esecuzione test inserimento
 for i in range(1, n, step):
+    print(i)
     assex.append(i)  # Lista delle dimensioni degli array
     # Creo un array con i elementi random tra 0 e max_values (= 10000)
     arr = random_array(i, max_value)
@@ -142,7 +143,7 @@ plt.show()
 # Grafico confronto tra le ricerche dei k-esimi elementi più piccoli
 plt.plot(assex, oll_order_statistic_times, color='blue', label='Ricerca k-esimo lista linkata ordinata')
 plt.plot(assex, bst_order_statistic_times, color='green', label='Ricerca k-esimo albero binario')
-plt.plot(assex, rbt_order_statistic_times,color='red', label='Ricerca k-esimo albero rosso-nero')
+plt.plot(assex, rbt_order_statistic_times, color='red', label='Ricerca k-esimo albero rosso-nero')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca k-esimo lista linkata ordinata')
@@ -178,7 +179,7 @@ plt.show()
 # Confronto grafici ricerca rank di un elemento
 plt.plot(assex, oll_rank_times, color='blue', label='Ricerca rank di un elemento lista linkata ordinata')
 plt.plot(assex, bst_rank_times, color='green', label='Ricerca rank di un elemento in un albero binario')
-plt.plot(assex, bst_rank_times, color='red', label='Ricerca rank di un elemento in un albero rosso-nero')
+plt.plot(assex, rbt_rank_times, color='red', label='Ricerca rank di un elemento in un albero rosso-nero')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca rank di un elemento in un albero rosso-nero')
@@ -188,24 +189,52 @@ plt.show()
 # Creazione delle tabelle
 
 # Creazione delle liste dei dati per inserimento, ricerca k-esima statistica d'ordine e rank
-data_inserimento = []
-data_order_statistic = []
-data_rank = []
+data_inserimento = {'Dimensione dell\'array': assex, 'Lista linkata ordinata': oll_insert_times, 'Albero binario': bst_insert_times, 'Albero rosso-nero': rbt_insert_times}
+df_ins = pd.DataFrame(data_inserimento)
+data_order_statistic = {'Dimensione dell\'array': assex, 'Lista linkata ordinata': oll_order_statistic_times, 'Albero binario': bst_order_statistic_times, 'Albero rosso-nero': rbt_order_statistic_times}
+df_os = pd.DataFrame(data_order_statistic)
+data_rank = {'Dimensione dell\'array': assex, 'Lista linkata ordinata': oll_rank_times, 'Albero binario': bst_rank_times, 'Albero rosso-nero': rbt_rank_times}
+df_rank = pd.DataFrame(data_rank)
 
-for assex, oll_insert_times, bst_insert_times, rbt_insert_times, oll_order_statistic_times, bst_order_statistic_times, rbt_order_statistic_times, oll_rank_times, bst_rank_times, rbt_rank_times in zip(assex, oll_insert_times, bst_insert_times, rbt_insert_times, oll_order_statistic_times, bst_order_statistic_times, rbt_order_statistic_times, oll_rank_times, bst_rank_times, rbt_rank_times):
-    data_inserimento.append([assex, oll_insert_times, bst_insert_times, rbt_insert_times])
-    data_order_statistic.append([assex, oll_order_statistic_times, bst_order_statistic_times, rbt_order_statistic_times])
-    data_rank.append([assex, oll_rank_times, bst_rank_times, rbt_rank_times])
+# Approssimazione dei tempi di esecuzione
+df_ins = df_ins.round(4)
+df_os = df_os.round(4)
+df_rank = df_rank.round(4)
 
-# Stampa delle tabelle con il testo centrato e senza indici
-# Tabella inserimenti
-print("Tempi di inserimento:")
-print(tabulate(data_inserimento, headers=['Dimensione dell\'array', 'Lista linkata ordinata', 'Albero binario', 'Albero rosso-nero'], tablefmt='fancy_grid', numalign='center'))
+# Visualizzazione delle tabelle come immagini separate
+plt.figure(figsize=(10, 6))  # Imposta la dimensione dell'immagine
 
-# Tabella statistica d'ordine
-print("Tempi di ricerca statistica d'ordine:")
-print(tabulate(data_order_statistic, headers=['Dimensione dell\'array', 'Lista linkata ordinata', 'Albero binario', 'Albero rosso-nero'], tablefmt='fancy_grid', numalign='center'))
+# Tabella 1: Inserimento
+plt.title("Inserimento")
+plt.axis('off')  # Rimuove gli assi
+table1 = plt.table(cellText=df_ins.values, colLabels=df_ins.columns, loc='center')
+table1.auto_set_font_size(False)
+table1.set_fontsize(10)
+plt.show()
+'''
+plt.savefig('tabella_inserimento.png')  # Salva l'immagine della tabella di inserimento come file PNG
+'''
 
-# Tabella rank
-print("Tempi di ricerca del rank:")
-print(tabulate(data_rank, headers=['Dimensione dell\'array', 'Lista linkata ordinata', 'Albero binario', 'Albero rosso-nero'], tablefmt='fancy_grid', numalign='center'))
+# Creazione di una nuova figura per la tabella di ricerca della k-esima statistica d'ordine
+plt.figure(figsize=(10, 6))
+plt.title("Ricerca K-esima Statistica d'Ordine")
+plt.axis('off')
+table2 = plt.table(cellText=df_os.values, colLabels=df_os.columns, loc='center')
+table2.auto_set_font_size(False)
+table2.set_fontsize(10)
+plt.show()
+'''
+plt.savefig('tabella_kesima_statistica_ordine.png')
+'''
+
+# Creazione di una nuova figura per la tabella di ricerca rank
+plt.figure(figsize=(10, 6))
+plt.title("Ricerca Rank")
+plt.axis('off')
+table3 = plt.table(cellText=df_rank.values, colLabels=df_rank.columns, loc='center')
+table3.auto_set_font_size(False)
+table3.set_fontsize(10)
+plt.show()
+'''
+plt.savefig('tabella_ricerca_rank.png')
+'''
