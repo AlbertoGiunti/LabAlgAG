@@ -8,7 +8,7 @@ from binary_search_tree import BinarySearchTree
 from red_black_tree import RedBlackTree
 
 n = 1001
-step = 25
+step = 50
 test_per_iteration = 10
 
 # Creo un metodo per creare array di numeri casuali
