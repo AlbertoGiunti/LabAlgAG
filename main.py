@@ -1,189 +1,186 @@
 import timeit
 import random
 import matplotlib.pyplot as plt
-import pandas as pd
+import tabulate
+
 from ordered_linked_list import OrderedLinkedList
-from ABR import BinarySearchTree
-from ARN import RedBlackTree
+from binary_search_tree import BinarySearchTree
+from red_black_tree import RedBlackTree
+
+n = 300
+step = 100
+test_per_iteration = 10
+
+# Creo un metodo per creare array di numeri casuali
+max_value = 10000
 
 
-# Definiamo una funzione che ci permette di eseguire i test della lista ordinata
-def oll_tests(n, rep):
-    oll = OrderedLinkedList()
-    A = list(range(n))
-    # test inserimento e ricerca k-esima statistica d'ordine
-    # eti = elapsed time insert
-    eti = 0
-    # etos = elapsed time order statistic
-    etos = 0
-    for _ in range(rep):
-        # Randomizza la lista di elementi da inserire ogni iterazione
-        random.shuffle(A)
-        e = timeit.timeit(stmt=lambda: [oll.insert(A[i]) for i in A], number=1)
-        eti = eti + e
-        # k = random.randint(1, n)
-        k = int(n / 2)
-        os = timeit.timeit(stmt=lambda: oll.order_statistic(k), number=1)
-        etos = etos + os
-    # Calcolo dei tempi medi di inserimento e ricerca della k-esima statistica d'ordine
-    tmi = eti / rep
-    tmos = etos / rep
-    return tmi, tmos
+def random_array(n, max_value):
+    return [random.randint(0, max_value) for _ in range(n)]
 
 
-# Definiamo una funzione che ci permette di eseguire i test dell'albero binario di ricerca
-def bst_tests(n, rep):
-    bst = BinarySearchTree()
-    A = list(range(n))
-    # test inserimento e ricerca k-esima statistica d'ordine
-    # eti = elapsed time insert
-    eti = 0
-    # etos = elapsed time order statistic
-    etos = 0
-    for _ in range(rep):
-        # Randomizza la lista di elementi da inserire ogni iterazione
-        random.shuffle(A)
-        e = timeit.timeit(stmt=lambda: [bst.insert(A[i]) for i in A], number=1)
-        eti = eti + e
-        # k = random.randint(1, n)
-        k = int(n / 2)
-        # Misura del tempo di ricerca della k-esima statistica d'ordine
-        os = timeit.timeit(stmt=lambda: bst.get_kesimo(bst.root, k), number=1)
-        etos = etos + os
-    # Calcolo dei tempi medi di inserimento e ricerca della k-esima statistica d'ordine
-    tmi = eti / rep
-    tmos = etos / rep
-    return tmi, tmos
+# Creo le strutture dati
+oll = OrderedLinkedList()
+bst = BinarySearchTree()
+rbt = RedBlackTree()
 
-
-# Definiamo una funzione che ci permette di eseguire i test dell'albero rosso nero
-def rbt_tests(n, rep):
-    rbt = RedBlackTree()
-    A = list(range(n))
-    # test inserimento e ricerca k-esima statistica d'ordine
-    # eti = elapsed time insert
-    eti = 0
-    # etos = elapsed time order statistic
-    etos = 0
-    for _ in range(rep):
-        # Randomizza la lista di elementi da inserire ogni iterazione
-        random.shuffle(A)
-        e = timeit.timeit(stmt=lambda: [rbt.insert(A[i]) for i in A], number=1)
-        eti = eti + e
-        # k = random.randint(1, n)
-        k = int(n / 2)
-        os = timeit.timeit(stmt=lambda: rbt.os_select(rbt.root, k), number=1)
-        etos = etos + os
-    # Calcolo dei tempi medi di inserimento e ricerca della k-esima statistica d'ordine
-    tmi = eti / rep
-    tmos = etos / rep
-    return tmi, tmos
-
-
-# Definiamo una lista di numeri di test
-n_values = list(range(50, 2000, 50))
-rep = 15
-
-# Liste dei risultati dei tempi di inserimento
+# Creo le liste in cui salvare i risultati dei test
 assex = []
-oll_ins_results = []
-bst_ins_results = []
-rbt_ins_results = []
+oll_insert_times = []
+bst_insert_times = []
+rbt_insert_times = []
+oll_order_statistic_times = []
+bst_order_statistic_times = []
+rbt_order_statistic_times = []
+oll_rank_times = []
+bst_rank_times = []
+rbt_rank_times = []
 
-# Liste dei risultati dei tempi di ricerca di una k-esima statistica d'ordine casuale
-oll_os_results = []
-bst_os_results = []
-rbt_os_results = []
 
-for n in n_values:
-    assex.append(n)
+# Creo le funzioni di test
+# Funzione di test dell'inserimento
+def measure_insert_test(insert_function, arr):
+    return timeit.timeit(stmt=lambda: [insert_function(arr[j]) for j in range(len(arr))],
+                         number=test_per_iteration) / test_per_iteration * 1000  # tempo in ms
 
-    oll_tins, oll_tos = oll_tests(n, rep)
-    oll_ins_results.append(oll_tins)
-    oll_os_results.append(oll_tos)
-    bst_tins, bst_tos = bst_tests(n, rep)
-    bst_ins_results.append(bst_tins)
-    bst_os_results.append(bst_tos)
-    rbt_tins, rbt_tos = rbt_tests(n, rep)
-    rbt_ins_results.append(rbt_tins)
-    rbt_os_results.append(rbt_tos)
 
-# Stampa i risultati trovati
-print("Risultati dei test: ")
-print("OLL inserimento: "+str(oll_ins_results))
-print("OLL ordere-statistic: "+str(oll_os_results))
-print("ABR inserimento: "+str(bst_ins_results))
-print("ABR order-statistic: "+str(bst_os_results))
-print("ARN inserimento: "+str(rbt_ins_results))
-print("ARN order-statistic: "+str(rbt_os_results))
+# Funzione di test della ricerca del k-esimo elemento più piccolo
+def measure_os_test(os_function, start, length):
+    k = length // 2  # Cerco l'elemento più o meno centrale
+    return timeit.timeit(stmt=lambda: os_function(start, k),
+                         number=test_per_iteration) / test_per_iteration * 1000  # tempo in ms
 
-# Rappresentiamo i risultati graficamente
 
-# Grafico funzione di inserimento ordered linked list
-plt.plot(assex, oll_ins_results, label="Tempo di inserimento Ordered Linked List")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di inserimento")
-plt.title("Tempo di inserimento Ordered Linked List")
+# Funzione di test della ricerca del rank di un elemento
+def measure_rank_test(rank_function, ric):
+    return timeit.timeit(stmt=lambda: rank_function(ric),
+                         number=test_per_iteration) / test_per_iteration * 1000  # tempo in ms)
+
+
+# Esecuzione test inserimento
+for i in range(1, n, step):
+    assex.append(i)  # Lista delle dimensioni degli array
+    # Creo un array con i elementi random tra 0 e max_values (= 10000)
+    arr = random_array(i, max_value)
+    # Svolgo i test sull'inserimento e mi salvo i risultati espressi in ms
+    oll_insert_times.append(measure_insert_test(oll.insert, arr))
+    bst_insert_times.append(measure_insert_test(bst.insert, arr))
+    rbt_insert_times.append(measure_insert_test(rbt.insert, arr))
+    # Svolgo i test sulla ricerca del k-esimo elemento più piccolo e mi salvo i risultati espressi in ms
+    oll_order_statistic_times.append(measure_os_test(oll.order_statistic, oll.head, i))
+    bst_order_statistic_times.append(measure_os_test(bst.get_kesimo, bst.root, i))
+    rbt_order_statistic_times.append(measure_os_test(rbt.os_select, rbt.root, i))
+    # Genero l'elemento da ricercare
+    ricercato = random.choice(arr)
+    # Svolgo i test sulla ricerca del rango di un elemento casuale dell'array
+    oll_rank_times.append(measure_rank_test(oll.oll_rank, ricercato))
+    bst_rank_times.append(measure_rank_test(bst.get_rank, bst.search(bst.root, ricercato)))
+    rbt_rank_times.append(measure_rank_test(rbt.os_rank, rbt.search(rbt.root, ricercato)))
+
+# Grafici test inserimento
+
+# Grafico inserimento lista linkata ordinata
+plt.plot(assex, oll_insert_times, label='Inserimento lista linkata ordinata')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi inserimento lista ordinata linkata')
 plt.legend()
 plt.show()
 
-# Grafico funzione di inserimento binary search tree
-plt.plot(assex, bst_ins_results, label="Tempo di inserimento Binary Search Tree")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di inserimento")
-plt.title("Tempo di inserimento Binary Search Tree")
+# Grafico inserimento albero binario
+plt.plot(assex, bst_insert_times, label='Inserimento albero binario')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi inserimento albero binario')
 plt.legend()
 plt.show()
 
-# Grafico funzione di inserimento red black tree
-plt.plot(assex, rbt_ins_results, label="Tempo di inserimento Red Black Tree")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di inserimento")
-plt.title("Tempo di inserimento Red Black Tree")
+# Grafico inserimento albero rosso-nero
+plt.plot(assex, rbt_insert_times, label='Inserimento albero rosso-nero')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi inserimento albero rosso-nero')
 plt.legend()
 plt.show()
 
-# Grafico funzione di ricerca ordered linked list
-plt.plot(assex, oll_os_results, label="Tempo di ricerca Ordered Linked List")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di ricerca")
-plt.title("Tempo di ricerca Ordered Linked List")
+# Grafico confronto tra i tre tempi di inserimento
+plt.plot(assex, oll_insert_times, label='Inserimento lista linkata ordinata')
+plt.plot(assex, bst_insert_times, label='Inserimento albero binario')
+plt.plot(assex, rbt_insert_times, label='Inserimento albero rosso-nero')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Confronto tempi inserimento')
 plt.legend()
 plt.show()
 
-# Grafico funzione di ricerca binary search tree
-plt.plot(assex, bst_os_results, label="Tempo di ricerca Binary Search Tree")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di ricerca")
-plt.title("Tempo di ricerca Binary Search Tree")
+# Grafici ricerca del k-esimo elemento più piccolo
+
+# Grafico ricerca del k-esimo elemento più piccolo in una lista linkata ordinata
+plt.plot(assex, oll_order_statistic_times, label='Ricerca k-esimo lista linkata ordinata')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca k-esimo lista linkata ordinata')
 plt.legend()
 plt.show()
 
-# Grafico funzione di ricerca red black tree
-plt.plot(assex, rbt_os_results, label="Tempo di ricerca Red Black Tree")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di ricerca")
-plt.title("Tempo di ricerca Red Black Tree")
+# Grafico ricerca del k-esimo elemento più piccolo in un albero binario
+plt.plot(assex, bst_order_statistic_times, label='Ricerca k-esimo albero binario')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca k-esimo albero binario')
 plt.legend()
 plt.show()
 
-# Confronto delle funzioni di inserimento
-plt.plot(assex, oll_ins_results, label="Tempo di inserimento Ordered Linked List")
-plt.plot(assex, bst_ins_results, label="Tempo di inserimento Binary Search Tree")
-plt.plot(assex, rbt_ins_results, label="Tempo di inserimento Red Black Tree")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di inserimento")
-plt.title("Confronto tra i tempi di inserimento")
+# Grafico ricerca del k-esimo elemento più piccolo in un albero rosso-nero
+plt.plot(assex, rbt_order_statistic_times, label='Ricerca k-esimo albero rosso-nero')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca k-esimo albero rosso-nero')
 plt.legend()
 plt.show()
 
+# Grafico confronto tra le ricerche dei k-esimi elementi più piccoli
+plt.plot(assex, oll_order_statistic_times, label='Ricerca k-esimo lista linkata ordinata')
+plt.plot(assex, bst_order_statistic_times, label='Ricerca k-esimo albero binario')
+plt.plot(assex, rbt_order_statistic_times, label='Ricerca k-esimo albero rosso-nero')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca k-esimo lista linkata ordinata')
+plt.legend()
+plt.show()
 
-# Confronto delle funzioni di ricerca
-plt.plot(assex, oll_os_results, label="Tempo di ricerca Ordered Linked List")
-plt.plot(assex, bst_os_results, label="Tempo di ricerca Binary Search Tree")
-plt.plot(assex, rbt_os_results, label="Tempo di ricerca Red Black Tree")
-plt.xlabel("Numero di elementi")
-plt.ylabel("Tempo di ricerca")
-plt.title("Confronto tra i tempi di ricerca")
+# Grafici ricerca rank di un elemento
+
+# Grafico ricerca rank di un elemento in una lista ordinata
+plt.plot(assex, oll_rank_times, label='Ricerca rank di un elemento lista linkata ordinata')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca rank di un elemento lista linkata ordinata')
+plt.legend()
+plt.show()
+
+# Grafico ricerca rank di un elemento in un albero binario
+plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero binario')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca rank di un elemento in un albero binario')
+plt.legend()
+plt.show()
+
+# Grafico ricerca rank di un elemento in un albero rosso-nero
+plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero rosso-nero')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca rank di un elemento in un albero rosso-nero')
+plt.legend()
+plt.show()
+
+# Confronto grafici ricerca rank di un elemento
+plt.plot(assex, oll_rank_times, label='Ricerca rank di un elemento lista linkata ordinata')
+plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero binario')
+plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero rosso-nero')
+plt.xlabel('Dimensione dell\'array')
+plt.ylabel('Tempo di esecuzione (ms)')
+plt.title('Tempi ricerca rank di un elemento in un albero rosso-nero')
 plt.legend()
 plt.show()

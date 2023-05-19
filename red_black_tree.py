@@ -20,6 +20,17 @@ class RedBlackTree:
         self.root = nil
         self.nil = nil
 
+    # Metodo che restituisce la posizione di un nodo nell'albero con un attraversamento in ordine
+    def os_rank(self, x):
+        r = x.left.size + 1
+        y = x
+        while y != self.root:
+            if y == y.parent.right:
+                r = r + y.parent.left.size + 1
+            y = y.parent
+        return r
+
+    # Metodo che restituisce il k-esimo nodo più piccolo dell'albero
     def os_select(self, x, k):
         """
         Select the i-th order statistic in the tree.
@@ -27,6 +38,11 @@ class RedBlackTree:
         :param k: the k-th order statistic to select
         :return: the node containing the k-th order statistic, or None if not found
         """
+        # Controllo per verificare se il valore di k è valido (compreso tra 1 e la dimensione del sottoalbero radicato in x).
+        # Se k è fuori dal range valido, restituisco None
+        if k <= 0 or k > x.size:
+            return None
+
         r = x.left.size + 1
         if k == r:
             return x.val
@@ -151,5 +167,15 @@ class RedBlackTree:
         if x != self.nil:
             self.print_tree_rec(x.left)
             # stampa tutte le informazioni relative a un nodo
-            print("val: " + str(x.val) + " size: " + str(x.size) + " color: " + str(x.color)+ " parent: " + str(x.parent.val) + " left: " + str(x.left.val) + " right: " + str(x.right.val))
+            print("val: " + str(x.val) + " size: " + str(x.size) + " color: " + str(x.color) + " parent: " + str(
+                x.parent.val) + " left: " + str(x.left.val) + " right: " + str(x.right.val))
             self.print_tree_rec(x.right)
+
+    # Ricerca
+    def search(self, node, val):
+        while node is not self.nil and val != node.val:
+            if val < node.val:
+                node = node.left
+            else:
+                node = node.right
+        return node

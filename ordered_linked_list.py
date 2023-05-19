@@ -25,12 +25,25 @@ class OrderedLinkedList:
             new_node.next = curr_node.next
             curr_node.next = new_node
 
-    def order_statistic(self, k):
-        curr_node = self.head
+    # Metodo che restituisce il k-esimo nodo più piccolo dell'albero
+    def order_statistic(self, x, k):
+        curr_node = x
         # cerco il nodo in posizione k
-        for i in range(0, k-1):
+        for i in range(0, k - 1):
             curr_node = curr_node.next
         return curr_node.value
+
+    # Metodo che restituisce la posizione di un nodo nella lista con un attraversamento in ordine
+    def oll_rank(self, x):
+        curr_node = self.head
+        r = 1
+        while curr_node is not None:
+            if curr_node.value == x:
+                return r
+            else:
+                r += 1
+                curr_node = curr_node.next
+        return None
 
     # Metodo per stampare la lista
     def print_list(self):
