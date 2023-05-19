@@ -1,7 +1,7 @@
 import timeit
 import random
 import matplotlib.pyplot as plt
-import tabulate
+from tabulate import tabulate
 
 from ordered_linked_list import OrderedLinkedList
 from binary_search_tree import BinarySearchTree
@@ -80,7 +80,7 @@ for i in range(1, n, step):
 # Grafici test inserimento
 
 # Grafico inserimento lista linkata ordinata
-plt.plot(assex, oll_insert_times, label='Inserimento lista linkata ordinata')
+plt.plot(assex, oll_insert_times, color='blue', label='Inserimento lista linkata ordinata')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi inserimento lista ordinata linkata')
@@ -88,7 +88,7 @@ plt.legend()
 plt.show()
 
 # Grafico inserimento albero binario
-plt.plot(assex, bst_insert_times, label='Inserimento albero binario')
+plt.plot(assex, bst_insert_times, color='green', label='Inserimento albero binario')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi inserimento albero binario')
@@ -104,9 +104,9 @@ plt.legend()
 plt.show()
 
 # Grafico confronto tra i tre tempi di inserimento
-plt.plot(assex, oll_insert_times, label='Inserimento lista linkata ordinata')
-plt.plot(assex, bst_insert_times, label='Inserimento albero binario')
-plt.plot(assex, rbt_insert_times, label='Inserimento albero rosso-nero')
+plt.plot(assex, oll_insert_times, color='blue', label='Inserimento lista linkata ordinata')
+plt.plot(assex, bst_insert_times, color='green', label='Inserimento albero binario')
+plt.plot(assex, rbt_insert_times, color='red', label='Inserimento albero rosso-nero')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Confronto tempi inserimento')
@@ -116,7 +116,7 @@ plt.show()
 # Grafici ricerca del k-esimo elemento più piccolo
 
 # Grafico ricerca del k-esimo elemento più piccolo in una lista linkata ordinata
-plt.plot(assex, oll_order_statistic_times, label='Ricerca k-esimo lista linkata ordinata')
+plt.plot(assex, oll_order_statistic_times, color='blue', label='Ricerca k-esimo lista linkata ordinata')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca k-esimo lista linkata ordinata')
@@ -124,7 +124,7 @@ plt.legend()
 plt.show()
 
 # Grafico ricerca del k-esimo elemento più piccolo in un albero binario
-plt.plot(assex, bst_order_statistic_times, label='Ricerca k-esimo albero binario')
+plt.plot(assex, bst_order_statistic_times, color='green', label='Ricerca k-esimo albero binario')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca k-esimo albero binario')
@@ -132,7 +132,7 @@ plt.legend()
 plt.show()
 
 # Grafico ricerca del k-esimo elemento più piccolo in un albero rosso-nero
-plt.plot(assex, rbt_order_statistic_times, label='Ricerca k-esimo albero rosso-nero')
+plt.plot(assex, rbt_order_statistic_times, color='red', label='Ricerca k-esimo albero rosso-nero')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca k-esimo albero rosso-nero')
@@ -140,9 +140,9 @@ plt.legend()
 plt.show()
 
 # Grafico confronto tra le ricerche dei k-esimi elementi più piccoli
-plt.plot(assex, oll_order_statistic_times, label='Ricerca k-esimo lista linkata ordinata')
-plt.plot(assex, bst_order_statistic_times, label='Ricerca k-esimo albero binario')
-plt.plot(assex, rbt_order_statistic_times, label='Ricerca k-esimo albero rosso-nero')
+plt.plot(assex, oll_order_statistic_times, color='blue', label='Ricerca k-esimo lista linkata ordinata')
+plt.plot(assex, bst_order_statistic_times, color='green', label='Ricerca k-esimo albero binario')
+plt.plot(assex, rbt_order_statistic_times,color='red', label='Ricerca k-esimo albero rosso-nero')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca k-esimo lista linkata ordinata')
@@ -152,7 +152,7 @@ plt.show()
 # Grafici ricerca rank di un elemento
 
 # Grafico ricerca rank di un elemento in una lista ordinata
-plt.plot(assex, oll_rank_times, label='Ricerca rank di un elemento lista linkata ordinata')
+plt.plot(assex, oll_rank_times, color='blue', label='Ricerca rank di un elemento lista linkata ordinata')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca rank di un elemento lista linkata ordinata')
@@ -160,7 +160,7 @@ plt.legend()
 plt.show()
 
 # Grafico ricerca rank di un elemento in un albero binario
-plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero binario')
+plt.plot(assex, bst_rank_times, color='green', label='Ricerca rank di un elemento in un albero binario')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca rank di un elemento in un albero binario')
@@ -168,7 +168,7 @@ plt.legend()
 plt.show()
 
 # Grafico ricerca rank di un elemento in un albero rosso-nero
-plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero rosso-nero')
+plt.plot(assex, bst_rank_times, color='red', label='Ricerca rank di un elemento in un albero rosso-nero')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca rank di un elemento in un albero rosso-nero')
@@ -176,11 +176,36 @@ plt.legend()
 plt.show()
 
 # Confronto grafici ricerca rank di un elemento
-plt.plot(assex, oll_rank_times, label='Ricerca rank di un elemento lista linkata ordinata')
-plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero binario')
-plt.plot(assex, bst_rank_times, label='Ricerca rank di un elemento in un albero rosso-nero')
+plt.plot(assex, oll_rank_times, color='blue', label='Ricerca rank di un elemento lista linkata ordinata')
+plt.plot(assex, bst_rank_times, color='green', label='Ricerca rank di un elemento in un albero binario')
+plt.plot(assex, bst_rank_times, color='red', label='Ricerca rank di un elemento in un albero rosso-nero')
 plt.xlabel('Dimensione dell\'array')
 plt.ylabel('Tempo di esecuzione (ms)')
 plt.title('Tempi ricerca rank di un elemento in un albero rosso-nero')
 plt.legend()
 plt.show()
+
+# Creazione delle tabelle
+
+# Creazione delle liste dei dati per inserimento, ricerca k-esima statistica d'ordine e rank
+data_inserimento = []
+data_order_statistic = []
+data_rank = []
+
+for assex, oll_insert_times, bst_insert_times, rbt_insert_times, oll_order_statistic_times, bst_order_statistic_times, rbt_order_statistic_times, oll_rank_times, bst_rank_times, rbt_rank_times in zip(assex, oll_insert_times, bst_insert_times, rbt_insert_times, oll_order_statistic_times, bst_order_statistic_times, rbt_order_statistic_times, oll_rank_times, bst_rank_times, rbt_rank_times):
+    data_inserimento.append([assex, oll_insert_times, bst_insert_times, rbt_insert_times])
+    data_order_statistic.append([assex, oll_order_statistic_times, bst_order_statistic_times, rbt_order_statistic_times])
+    data_rank.append([assex, oll_rank_times, bst_rank_times, rbt_rank_times])
+
+# Stampa delle tabelle con il testo centrato e senza indici
+# Tabella inserimenti
+print("Tempi di inserimento:")
+print(tabulate(data_inserimento, headers=['Dimensione dell\'array', 'Lista linkata ordinata', 'Albero binario', 'Albero rosso-nero'], tablefmt='fancy_grid', numalign='center'))
+
+# Tabella statistica d'ordine
+print("Tempi di ricerca statistica d'ordine:")
+print(tabulate(data_order_statistic, headers=['Dimensione dell\'array', 'Lista linkata ordinata', 'Albero binario', 'Albero rosso-nero'], tablefmt='fancy_grid', numalign='center'))
+
+# Tabella rank
+print("Tempi di ricerca del rank:")
+print(tabulate(data_rank, headers=['Dimensione dell\'array', 'Lista linkata ordinata', 'Albero binario', 'Albero rosso-nero'], tablefmt='fancy_grid', numalign='center'))
