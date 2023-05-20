@@ -159,18 +159,6 @@ class RedBlackTree:
     def root(self):
         return self.root
 
-    # Funzione che stampa l'albero in ordine di grandezza
-    def print_tree(self):
-        self.print_tree_rec(self.root)
-
-    def print_tree_rec(self, x):
-        if x != self.nil:
-            self.print_tree_rec(x.left)
-            # stampa tutte le informazioni relative a un nodo
-            print("val: " + str(x.val) + " size: " + str(x.size) + " color: " + str(x.color) + " parent: " + str(
-                x.parent.val) + " left: " + str(x.left.val) + " right: " + str(x.right.val))
-            self.print_tree_rec(x.right)
-
     # Ricerca
     def search(self, node, val):
         while node is not self.nil and val != node.val:

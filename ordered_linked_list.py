@@ -44,10 +44,3 @@ class OrderedLinkedList:
                 r += 1
                 curr_node = curr_node.next
         return None
-
-    # Metodo per stampare la lista
-    def print_list(self):
-        curr_node = self.head
-        while curr_node is not None:
-            print(curr_node.value)
-            curr_node = curr_node.next

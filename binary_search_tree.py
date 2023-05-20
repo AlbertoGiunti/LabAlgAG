@@ -28,15 +28,6 @@ class BinarySearchTree:
         else:
             y.right = z
 
-    def print_tree(self):
-        self.print_tree_rec(self.root)
-
-    def print_tree_rec(self, node):
-        if node is not None:
-            self.print_tree_rec(node.left)
-            print(node.val)
-            self.print_tree_rec(node.right)
-
     # Metodo che restituisce il k-esimo nodo più piccolo dell'albero
     def get_kesimo(self, node, k):
         stack = []
