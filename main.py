@@ -7,8 +7,8 @@ from ordered_linked_list import OrderedLinkedList
 from binary_search_tree import BinarySearchTree
 from red_black_tree import RedBlackTree
 
-n = 1307
-step = 50
+n = 2506
+step = 100
 test_per_iteration = 100
 
 
@@ -82,9 +82,15 @@ if __name__ == '__main__':
         rbt_order_statistic_times.append(measure_os_test(rbt.os_select, rbt.root, i))
 
         # Svolgo i test sulla ricerca del rango di un elemento casuale dell'array
-        oll_rank_times.append(measure_rank_test(oll.oll_rank, i // 2))
+        oll_rank_times.append(measure_rank_test(oll.oll_rank, oll.search(oll.head, i // 2)))
         bst_rank_times.append(measure_rank_test(bst.get_rank, bst.search(bst.root, i // 2)))
         rbt_rank_times.append(measure_rank_test(rbt.os_rank, rbt.search(rbt.root, i // 2)))
+
+        # Svuoto le liste
+        oll = OrderedLinkedList()
+        bst = BinarySearchTree()
+        rbt = RedBlackTree()
+
 
     # Grafici test inserimento
 

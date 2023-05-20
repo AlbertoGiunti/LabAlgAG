@@ -44,3 +44,13 @@ class OrderedLinkedList:
                 r += 1
                 curr_node = curr_node.next
         return None
+
+    # Metodo che restituisce un nodo con valore x se presente nella lista
+    def search(self, start, x):
+        curr_node = start
+        while curr_node is not None:
+            if curr_node.value == x:
+                return curr_node
+            else:
+                curr_node = curr_node.next
+        return None
