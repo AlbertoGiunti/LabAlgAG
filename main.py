@@ -36,13 +36,13 @@ def measure_insert_test(insert_function, array):
 def measure_os_test(os_function, start, length):
     k = length // 2  # Cerco l'elemento più o meno centrale
     return timeit.timeit(stmt=lambda: os_function(start, k),
-                         number=test_per_iteration) * 1000  # tempo in ms
+                         number=test_per_iteration) / test_per_iteration * 1000  # tempo in ms
 
 
 # Funzione di test della ricerca del rank di un elemento
 def measure_rank_test(rank_function, ric):
     return timeit.timeit(stmt=lambda: rank_function(ric),
-                         number=test_per_iteration) * 1000  # tempo in ms)
+                         number=test_per_iteration) / test_per_iteration * 1000  # tempo in ms)
 
 
 if __name__ == '__main__':
