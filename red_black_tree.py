@@ -4,7 +4,7 @@ class Color:
     BLACK = 'BLACK'
 
 
-class Node:
+class RBTNode:
     def __init__(self, val, s=1, col=None):
         self.val = val  # the value of the node
         self.size = s  # the size of the subtree rooted at this node
@@ -16,7 +16,7 @@ class Node:
 
 class RedBlackTree:
     def __init__(self):
-        nil = Node(None, 0, col=Color.BLACK)
+        nil = RBTNode(None, 0, col=Color.BLACK)
         self.root = nil
         self.nil = nil
 
@@ -55,7 +55,7 @@ class RedBlackTree:
         """
         Insert a new node into the tree.
         """
-        z = Node(val)
+        z = RBTNode(val)
         y = self.nil
         x = self.root
         while x != self.nil:

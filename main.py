@@ -68,7 +68,7 @@ if __name__ == '__main__':
     for i in range(5, n, step):
         print(i)
         assex.append(i)  # Lista delle dimensioni degli array
-        # Creo un array con i elementi random tra 0 e max_values (= 10000)
+        # Creo un array con i elementi random tra 0 e n
         arr = random_array(i)
 
         # svolgo i test sull'inserimento e mi salvo i risultati espressi in ms

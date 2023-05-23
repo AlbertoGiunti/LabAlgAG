@@ -1,4 +1,4 @@
-class Node:
+class BSTNode:
     def __init__(self, v):
         self.val = v
         self.left = None
@@ -11,7 +11,7 @@ class BinarySearchTree:
         self.root = None
 
     def insert(self, val):
-        z = Node(val)
+        z = BSTNode(val)
         y = None
         x = self.root
         while x is not None:

@@ -1,4 +1,4 @@
-class Node:
+class OLLNode:
     def __init__(self, value):
         self.value = value
         self.next = None
@@ -11,7 +11,7 @@ class OrderedLinkedList:
         self.head = None
 
     def insert(self, value):
-        new_node = Node(value)
+        new_node = OLLNode(value)
 
         if self.head is None:
             self.head = new_node
