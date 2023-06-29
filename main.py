@@ -2,13 +2,14 @@ import timeit
 import random
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 from ordered_linked_list import OrderedLinkedList
 from binary_search_tree import BinarySearchTree
 from red_black_tree import RedBlackTree
 
 n = 2506
-step = 100
+step = 150
 test_per_iteration = 100
 
 
@@ -91,6 +92,19 @@ if __name__ == '__main__':
         bst = BinarySearchTree()
         rbt = RedBlackTree()
 
+    # Funzione per svuotare una cartella
+    def svuota_cartella(cartella):
+        file_lista = os.listdir(cartella)
+        for file in file_lista:
+            file_path = os.path.join(cartella, file)
+            os.remove(file_path)
+
+
+    # Svuota la cartella "tabelle"
+    svuota_cartella("tabelle")
+
+    # Svuota la cartella "immagini"
+    svuota_cartella("immagini")
 
     # Grafici test inserimento
 
@@ -101,6 +115,8 @@ if __name__ == '__main__':
     plt.title('Tempi inserimento lista ordinata linkata')
     plt.legend()
     plt.show()
+    # Salvo i grafdici nella cartella immagini
+    plt.savefig('immagini/oll_insert.png')
 
     # Grafico inserimento albero binario
     plt.plot(assex, bst_insert_times, color='green', label='Inserimento albero binario')
@@ -108,6 +124,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi inserimento albero binario')
     plt.legend()
+    plt.savefig('immagini/bst_insert.png')
     plt.show()
 
     # Grafico inserimento albero rosso-nero
@@ -116,6 +133,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi inserimento albero rosso-nero')
     plt.legend()
+    plt.savefig('immagini/rbt_insert.png')
     plt.show()
 
     # Grafico confronto tra i tre tempi di inserimento
@@ -126,6 +144,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Confronto tempi inserimento')
     plt.legend()
+    plt.savefig('immagini/insert.png')
     plt.show()
 
     # Grafici ricerca del k-esimo elemento più piccolo
@@ -136,6 +155,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca k-esimo lista linkata ordinata')
     plt.legend()
+    plt.savefig('immagini/oll_order_statistic.png')
     plt.show()
 
     # Grafico ricerca del k-esimo elemento più piccolo in un albero binario
@@ -144,6 +164,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca k-esimo albero binario')
     plt.legend()
+    plt.savefig('immagini/bst_order_statistic.png')
     plt.show()
 
     # Grafico ricerca del k-esimo elemento più piccolo in un albero rosso-nero
@@ -152,6 +173,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca k-esimo albero rosso-nero')
     plt.legend()
+    plt.savefig('immagini/rbt_order_statistic.png')
     plt.show()
 
     # Grafico confronto tra le ricerche dei k-esimi elementi più piccoli
@@ -162,6 +184,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca k-esimo lista linkata ordinata')
     plt.legend()
+    plt.savefig('immagini/order_statistic.png')
     plt.show()
 
     # Grafici ricerca rank di un elemento
@@ -172,6 +195,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca rank di un elemento lista linkata ordinata')
     plt.legend()
+    plt.savefig('immagini/oll_rank.png')
     plt.show()
 
     # Grafico ricerca rank di un elemento in un albero binario
@@ -180,6 +204,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca rank di un elemento in un albero binario')
     plt.legend()
+    plt.savefig('immagini/bst_rank.png')
     plt.show()
 
     # Grafico ricerca rank di un elemento in un albero rosso-nero
@@ -188,6 +213,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca rank di un elemento in un albero rosso-nero')
     plt.legend()
+    plt.savefig('immagini/rbt_rank.png')
     plt.show()
 
     # Confronto grafici ricerca rank di un elemento
@@ -198,6 +224,7 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi ricerca rank di un elemento in un albero rosso-nero')
     plt.legend()
+    plt.savefig('immagini/rank.png')
     plt.show()
 
     # Creazione delle tabelle
@@ -227,10 +254,8 @@ if __name__ == '__main__':
     table1 = plt.table(cellText=df_ins.values, colLabels=df_ins.columns, loc='center')
     table1.auto_set_font_size(False)
     table1.set_fontsize(10)
+    plt.savefig('tabelle/tabella_inserimento.png')  # Salva l'immagine della tabella di inserimento come file PNG
     plt.show()
-    '''
-    plt.savefig('tabella_inserimento.png')  # Salva l'immagine della tabella di inserimento come file PNG
-    '''
 
     # Creazione di una nuova figura per la tabella di ricerca della k-esima statistica d'ordine
     plt.figure(figsize=(10, 6))
@@ -239,10 +264,8 @@ if __name__ == '__main__':
     table2 = plt.table(cellText=df_os.values, colLabels=df_os.columns, loc='center')
     table2.auto_set_font_size(False)
     table2.set_fontsize(10)
+    plt.savefig('tabelle/tabella_kesima_statistica_ordine.png')
     plt.show()
-    '''
-    plt.savefig('tabella_kesima_statistica_ordine.png')
-    '''
 
     # Creazione di una nuova figura per la tabella di ricerca rank
     plt.figure(figsize=(10, 6))
@@ -251,7 +274,5 @@ if __name__ == '__main__':
     table3 = plt.table(cellText=df_rank.values, colLabels=df_rank.columns, loc='center')
     table3.auto_set_font_size(False)
     table3.set_fontsize(10)
+    plt.savefig('tabelle/tabella_ricerca_rank.png')
     plt.show()
-    '''
-    plt.savefig('tabella_ricerca_rank.png')
-    '''
