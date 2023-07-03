@@ -114,9 +114,9 @@ if __name__ == '__main__':
     plt.ylabel('Tempo di esecuzione (ms)')
     plt.title('Tempi inserimento lista ordinata linkata')
     plt.legend()
-    plt.show()
     # Salvo i grafdici nella cartella immagini
     plt.savefig('immagini/oll_insert.png')
+    plt.show()
 
     # Grafico inserimento albero binario
     plt.plot(assex, bst_insert_times, color='green', label='Inserimento albero binario')
